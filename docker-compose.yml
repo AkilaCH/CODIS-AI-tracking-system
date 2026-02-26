@@ -1,0 +1,21 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - CAMERA_INDEX=0
+    # Note: Accessing a physical Windows webcam from inside a Docker container 
+    # requires additional device-mapping configurations depending on your OS.
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_WS_URL=ws://backend:8000/ws/telemetry
+    depends_on:
+      - backend
